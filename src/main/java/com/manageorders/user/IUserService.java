@@ -1,7 +1,5 @@
 package com.manageorders.user;
 
-import com.manageorders.user.User;
-
 import java.util.List;
 import java.util.Optional;
 
