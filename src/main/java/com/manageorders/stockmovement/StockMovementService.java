@@ -14,29 +14,30 @@ public class StockMovementService implements IStockMovementService {
 
     private final ItemRepository itemRepository;
     private final ItemService itemService;
-
-    private StockMovementDTO stockMovementDTO;
     private final IStockMovementRepository stockMovementRepository;
 
-    public StockMovementService(IStockMovementRepository stockMovementRepository, ItemRepository itemRepository, ItemService itemService, StockMovementDTO stockMovementDTO) {
+    public StockMovementService(IStockMovementRepository stockMovementRepository, ItemRepository itemRepository, ItemService itemService) {
         this.stockMovementRepository = stockMovementRepository;
         this.itemRepository = itemRepository;
         this.itemService = itemService;
-        this.stockMovementDTO = stockMovementDTO;
     }
 
     @Override
-    public StockMovementDTO createStockMovement(StockMovementDTO stockMovementDTO) {
+    public StockMovement createStockMovement(StockMovementDTO stockMovementDTO) {
+        Long itemId = stockMovementDTO.getItemId();
+        if (itemRepository.existsById(itemId)) {
+            Optional<Item> getItem = itemService.getItemById(itemId);
 
-        if (itemRepository.existsById(stockMovementDTO.getItemId())) {
-            Optional<Item> item = itemService.getItemById(itemIdFromUrl);
+        Item item = new Item();
+        item.setId(getItem.get().getId());
+        item.setName(getItem.get().getName());
 
-            //            stockMovementDTO.setItemId(item.get().getId());
-            //            stockMovement.setItem();
 
-            stockMovement.setQuantity(stockMovement.getQuantity());
-
-            return stockMovementRepository.save(stockMovement);
+        StockMovement stockMovement = new StockMovement();
+        stockMovement.setItem(item);
+        stockMovement.setQuantity(stockMovementDTO.getQuantity());
+        stockMovement.setCreationDate(LocalDateTime.now());
+        return stockMovementRepository.save(stockMovement);
         } else {
             throw new IllegalArgumentException("Item does not exist");
         }

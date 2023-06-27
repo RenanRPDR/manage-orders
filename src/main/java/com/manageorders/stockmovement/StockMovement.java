@@ -13,8 +13,8 @@ public class StockMovement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime creationDate;
     @ManyToOne
     private Item item;
     private Integer quantity;
+    private LocalDateTime creationDate;
 }

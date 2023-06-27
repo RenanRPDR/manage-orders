@@ -1,8 +1,5 @@
 package com.manageorders.stockmovement;
 
-import com.manageorders.item.Item;
-import com.manageorders.item.ItemController;
-import com.manageorders.item.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +12,14 @@ import java.util.Optional;
 public class StockMovementController {
 
     private final StockMovementService stockMovementService;
-    public StockMovementController(StockMovementService stockMovementService, ItemService itemService) {
+
+    public StockMovementController(StockMovementService stockMovementService) {
         this.stockMovementService = stockMovementService;
     }
 
     @PostMapping
-    public ResponseEntity<StockMovement> createStockMovement( @PathVariable Long itemIdFromUrl, @RequestBody StockMovement stockMovement) {
-        StockMovement createdStockMovement = stockMovementService.createStockMovement(itemIdFromUrl, stockMovement);
+    public ResponseEntity<StockMovement> createStockMovement(@RequestBody StockMovementDTO stockMovementDTO) {
+        StockMovement createdStockMovement = stockMovementService.createStockMovement(stockMovementDTO);
         return new ResponseEntity<>(createdStockMovement, HttpStatus.CREATED);
     }
 
