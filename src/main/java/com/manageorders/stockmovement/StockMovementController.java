@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/stock-movement")
+@RequestMapping("/stockmovements")
 public class StockMovementController {
 
     private final StockMovementService stockMovementService;
