@@ -53,4 +53,10 @@ public class OrderController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/jpa/{itemId}")
+    public ResponseEntity<List<Order>> getAllOrdersByItemId(@PathVariable Long itemId) {
+        List<Order> orders = orderService.findOrderByItemId(itemId);
+        return ResponseEntity.ok(orders);
+    }
 }
