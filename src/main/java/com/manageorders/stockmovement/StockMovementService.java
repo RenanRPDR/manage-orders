@@ -1,7 +1,6 @@
 package com.manageorders.stockmovement;
 
 import com.manageorders.item.Item;
-import com.manageorders.item.ItemRepository;
 import com.manageorders.item.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class StockMovementService implements IStockMovementService  {
     @Autowired
     private final IStockMovementRepository stockMovementRepository;
 
-    public StockMovementService(IStockMovementRepository stockMovementRepository, ItemRepository itemRepository, ItemService itemService) {
+    public StockMovementService(IStockMovementRepository stockMovementRepository, ItemService itemService) {
         this.stockMovementRepository = stockMovementRepository;
         this.itemService = itemService;
     }
@@ -28,7 +27,6 @@ public class StockMovementService implements IStockMovementService  {
         Optional<Item> optionalItem = itemService.getItemById(itemId);
         if (optionalItem.isEmpty()){
             throw new Error("Item does not exist");
-//            throw new IllegalArgumentException("Item does not exist");
         }
 
         Boolean stockMovementForThisItem = findStockMovementByItemName(optionalItem.get().getName());
