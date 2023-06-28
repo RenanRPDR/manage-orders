@@ -19,8 +19,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
-    private final ItemService itemService;
     private final UserService userService;
+    private final ItemService itemService;
 
     @Autowired
     public OrderService(OrderRepository orderRepository, UserRepository userRepository, ItemRepository itemRepository, ItemService itemService, UserService userService) {
@@ -42,7 +42,8 @@ public class OrderService {
     public Order createOrder(OrderDTO orderDTO) {
         User user = userRepository.findById(orderDTO.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        Item item = itemRepository.findById(orderDTO.getItem().getId())
+        Long itemId = orderDTO.getItem().getId();
+        Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("Does not exists item"));
 
         Order order = new Order();
