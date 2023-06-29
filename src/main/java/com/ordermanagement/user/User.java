@@ -1,13 +1,15 @@
-package com.manageorders.item;
+package com.ordermanagement.user;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 @Entity
 @Data
-@Table(name = "items")
-public class Item {
+@Table(name = "users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String email;
 }

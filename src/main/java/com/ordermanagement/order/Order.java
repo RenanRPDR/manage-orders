@@ -1,7 +1,7 @@
-package com.manageorders.order;
+package com.ordermanagement.order;
 
-import com.manageorders.item.Item;
-import com.manageorders.user.User;
+import com.ordermanagement.item.Item;
+import com.ordermanagement.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;

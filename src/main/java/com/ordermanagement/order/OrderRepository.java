@@ -1,4 +1,4 @@
-package com.manageorders.order;
+package com.ordermanagement.order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

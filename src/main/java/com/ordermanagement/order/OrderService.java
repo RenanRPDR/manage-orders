@@ -1,11 +1,11 @@
-package com.manageorders.order;
+package com.ordermanagement.order;
 
-import com.manageorders.item.Item;
-import com.manageorders.item.ItemRepository;
-import com.manageorders.item.ItemService;
-import com.manageorders.user.User;
-import com.manageorders.user.UserRepository;
-import com.manageorders.user.UserService;
+import com.ordermanagement.item.Item;
+import com.ordermanagement.item.ItemRepository;
+import com.ordermanagement.item.ItemService;
+import com.ordermanagement.user.User;
+import com.ordermanagement.user.UserRepository;
+import com.ordermanagement.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

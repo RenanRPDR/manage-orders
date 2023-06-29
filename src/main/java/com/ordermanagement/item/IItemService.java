@@ -1,4 +1,4 @@
-package com.manageorders.item;
+package com.ordermanagement.item;
 
 import java.util.List;
 import java.util.Optional;
