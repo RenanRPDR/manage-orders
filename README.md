@@ -28,7 +28,7 @@ Technical challenge where users can create and manage orders.
 - Import the collection of requests from the "Order Management - requests.json" file into the main project folder
 
 ### Technologies and tools
-- Java, Spring Boot and JPA
+- Java17+, Spring Boot and JPA
 - Docker and Postgres
 - Git and GitFlow
 - IntelliJ IDEA, DBeaver and Insomnia
