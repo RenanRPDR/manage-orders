@@ -9,4 +9,5 @@ public class OrderDTO {
     private Item item;
     private Integer quantity;
     private User user;
+    private String status;
 }

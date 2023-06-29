@@ -63,8 +63,6 @@ public class OrderService {
         }
 
         Order order = new Order();
-        order.setId(optionalOrders.get().getId());
-
         Optional<Item> optionalItem = itemService.getItemById(orderDTO.getItem().getId());
         Item item = new Item();
         item.setId(optionalItem.get().getId());
@@ -75,9 +73,12 @@ public class OrderService {
         User user = new User();
         user.setId(optionalUser.get().getId());
         user.setName(optionalUser.get().getName());
-        order.setUser(user);
 
+        order.setId(optionalOrders.get().getId());
+        order.setUser(user);
+        order.setStatus(optionalOrders.get().getStatus());
         order.setQuantity(orderDTO.getQuantity());
+        order.setCreationDate(LocalDateTime.now());
         order.setCreationDate(LocalDateTime.now());
 
         return orderRepository.save(order);
