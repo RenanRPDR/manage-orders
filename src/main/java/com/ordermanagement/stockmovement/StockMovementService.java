@@ -44,7 +44,7 @@ public class StockMovementService implements IStockMovementService  {
             stockMovement.setQuantity(stockMovementDTO.getQuantity());
             stockMovement.setCreationDate(LocalDateTime.now());
         }
-            return stockMovementRepository.save(stockMovement);
+        return stockMovementRepository.save(stockMovement);
     }
 
     @Override
@@ -58,7 +58,23 @@ public class StockMovementService implements IStockMovementService  {
     }
 
     @Override
-    public StockMovement updateStockMovement(Long id, StockMovement stockMovement) {
+    public StockMovement updateStockMovement(Long id, StockMovementDTO stockMovementDTO) {
+        StockMovement stockMovement = new StockMovement();
+        Optional<StockMovement> existingStockMovement = getStockMovementById(id);
+        if (existingStockMovement.isPresent()){
+            Item item = new Item();
+            item.setId(existingStockMovement.get().getItem().getId());
+            item.setName(existingStockMovement.get().getItem().getName());
+            stockMovement.setItem(item);
+            stockMovement.setId(existingStockMovement.get().getId());
+
+            Integer quantity = stockMovementDTO.getQuantity();
+            if (quantity == null) { throw new IllegalArgumentException("Quantity must not be null");}
+            if (quantity < 0) { throw new IllegalArgumentException("Quantity value must not be negative");}
+            stockMovement.setQuantity(quantity);
+
+            stockMovement.setCreationDate(existingStockMovement.get().getCreationDate());
+        }
         return stockMovementRepository.save(stockMovement);
     }
 

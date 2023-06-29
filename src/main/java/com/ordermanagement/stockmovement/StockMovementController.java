@@ -37,15 +37,25 @@ public class StockMovementController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StockMovement> updateStockMovement(@PathVariable Long id, @RequestBody StockMovement item) {
-        Optional<StockMovement> existingStockMovement = stockMovementService.getStockMovementById(id);
-        if (existingStockMovement.isPresent()) {
-            item.setId(id);
-            StockMovement updatedStockMovement = stockMovementService.updateStockMovement(id, item);
-            return new ResponseEntity<>(updatedStockMovement, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<StockMovement> update(@PathVariable Long id, @RequestBody StockMovementDTO stockMovementDTO) {
+        StockMovement updatedStockMovement = stockMovementService.updateStockMovement(id, stockMovementDTO);
+        return new ResponseEntity<>(updatedStockMovement, HttpStatus.OK);
     }
+
+//    @PutMapping("/{id}")
+//    public ResponseEntity<StockMovement> updateStockMovement(@PathVariable Long id, @RequestBody StockMovement item) {
+//
+//    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<StockMovement> updateStockMovement(@PathVariable Long id, @RequestBody StockMovement item) {
+//        Optional<StockMovement> existingStockMovement = stockMovementService.getStockMovementById(id);
+//        if (existingStockMovement.isPresent()) {
+//            item.setId(id);
+//            StockMovement updatedStockMovement = stockMovementService.updateStockMovement(id, item);
+//            return new ResponseEntity<>(updatedStockMovement, HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStockMovement(@PathVariable Long id) {
