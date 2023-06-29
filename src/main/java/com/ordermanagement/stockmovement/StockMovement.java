@@ -1,6 +1,6 @@
-package com.manageorders.stockmovement;
+package com.ordermanagement.stockmovement;
 
-import com.manageorders.item.Item;
+import com.ordermanagement.item.Item;
 import jakarta.persistence.*;
 import lombok.Data;
 

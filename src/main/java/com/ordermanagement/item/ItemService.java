@@ -1,4 +1,4 @@
-package com.manageorders.item;
+package com.ordermanagement.item;
 
 import org.springframework.stereotype.Service;
 

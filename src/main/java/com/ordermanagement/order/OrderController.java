@@ -1,4 +1,4 @@
-package com.manageorders.order;
+package com.ordermanagement.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.manageorders.user;
+package com.ordermanagement.user;
 
 import org.springframework.stereotype.Service;
 

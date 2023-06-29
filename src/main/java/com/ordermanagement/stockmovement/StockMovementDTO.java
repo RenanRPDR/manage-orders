@@ -1,4 +1,4 @@
-package com.manageorders.stockmovement;
+package com.ordermanagement.stockmovement;
 
 import lombok.Data;
 

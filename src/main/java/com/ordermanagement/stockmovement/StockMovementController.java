@@ -1,4 +1,4 @@
-package com.manageorders.stockmovement;
+package com.ordermanagement.stockmovement;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

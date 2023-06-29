@@ -1,13 +1,13 @@
-package com.manageorders;
+package com.ordermanagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ManageOrdersApplication {
+public class OrderManagementApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ManageOrdersApplication.class, args);
+		SpringApplication.run(OrderManagementApplication.class, args);
 	}
 
 }
