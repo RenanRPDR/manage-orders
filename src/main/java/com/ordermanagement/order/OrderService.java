@@ -1,5 +1,6 @@
 package com.ordermanagement.order;
 
+import com.ordermanagement.email.EmailService;
 import com.ordermanagement.item.Item;
 import com.ordermanagement.item.ItemRepository;
 import com.ordermanagement.item.ItemService;
@@ -26,15 +27,17 @@ public class OrderService {
     private final UserService userService;
     private final ItemService itemService;
     private final StockMovementService stockMovementService;
+    private final EmailService emailService;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, UserRepository userRepository, ItemRepository itemRepository, ItemService itemService, UserService userService, StockMovementService stockMovementService) {
+    public OrderService(OrderRepository orderRepository, UserRepository userRepository, ItemRepository itemRepository, ItemService itemService, UserService userService, StockMovementService stockMovementService, EmailService emailService) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.itemRepository = itemRepository;
         this.itemService = itemService;
         this.userService = userService;
         this.stockMovementService = stockMovementService;
+        this.emailService = emailService;
     }
 
     public List<Order> getAllOrders() {
@@ -56,20 +59,27 @@ public class OrderService {
         Order order = new Order();
         if(stockMovementService.existsStockMovementByItemName(itemName)) {
             StockMovement stockMovement = stockMovementService.findStockMovementByItemName(itemName);
+
             if (stockMovement.getQuantity() >= orderDTO.getQuantity()) {
-                order.setUser(user);
-                order.setItem(item);
-                order.setQuantity(orderDTO.getQuantity());
                 order.setStatus("Done");
-                order.setCreationDate(LocalDateTime.now());
                 Integer updateStockMovementQuantity = stockMovement.getQuantity() - orderDTO.getQuantity();
                 stockMovement.setQuantity(updateStockMovementQuantity);
-                return orderRepository.save(order);
+                System.out.println(emailService.sendSuccessOrder(user));
             }
+
+            if (stockMovement.getQuantity() < orderDTO.getQuantity()) {
+                order.setStatus("Pending");
+                order.setQuantity(orderDTO.getQuantity());
+            }
+
+            order.setUser(user);
+            order.setItem(item);
+            order.setQuantity(orderDTO.getQuantity());
+            order.setCreationDate(LocalDateTime.now());
         } else {
             new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return order;
+        return orderRepository.save(order);
     }
 
     public Order updateOrder(Long id, OrderDTO orderDTO) {

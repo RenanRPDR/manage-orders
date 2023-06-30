@@ -30,6 +30,8 @@ public class StockMovementController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // TODO: getStockMovementByName and return objetic
+
     @GetMapping
     public ResponseEntity<List<StockMovement>> getAllStockMovements() {
         List<StockMovement> items = stockMovementService.getAllStockMovements();
