@@ -13,6 +13,7 @@ import java.util.Optional;
 public class StockMovementService implements IStockMovementService  {
 
     private final ItemService itemService;
+
     @Autowired
     private final IStockMovementRepository stockMovementRepository;
 
@@ -29,7 +30,7 @@ public class StockMovementService implements IStockMovementService  {
             throw new Error("Item does not exist");
         }
 
-        Boolean stockMovementForThisItem = findStockMovementByItemName(optionalItem.get().getName());
+        Boolean stockMovementForThisItem = existsStockMovementByItemName(optionalItem.get().getName());
         if (stockMovementForThisItem){
             throw new Error("Does exist stockmovement for this item");
         }
@@ -83,7 +84,20 @@ public class StockMovementService implements IStockMovementService  {
         stockMovementRepository.deleteById(id);
     }
 
-    public Boolean findStockMovementByItemName(String itemName) {
+    public StockMovement findStockMovementByItemName(String itemName) {
+        // TODO: Refatorar esse map para uma query com Jpa
+        StockMovement stockMovement = new StockMovement();
+        List<StockMovement> stockMovements = getAllStockMovements();
+        for (StockMovement findStockMovement : stockMovements) {
+            if (findStockMovement.getItem().getName().equals(itemName)) {
+                stockMovement = findStockMovement;
+            }
+        }
+        return stockMovement;
+    }
+
+    public Boolean existsStockMovementByItemName(String itemName) {
+        // TODO: Refatorar esse map para uma query com Jpa
         List<StockMovement> stockMovements = getAllStockMovements();
         for (StockMovement stockMovement: stockMovements) {
             if(stockMovement.getItem().getName().equals(itemName)){
