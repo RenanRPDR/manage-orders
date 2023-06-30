@@ -49,24 +49,19 @@ public class OrderService {
         User user = userRepository.findById(orderDTO.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        //refact: TODO:  Esse item deve vir do StockMovement e nao da repository de Item
         Item item = itemRepository.findById(orderDTO.getItem().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Does not exists item"));
 
-        //implement TODO: Verificar se existe StockMovement para aquele Item
         String itemName = item.getName();
         Order order = new Order();
         if(stockMovementService.existsStockMovementByItemName(itemName)) {
-        //implement TODO:  Verificar se esse StockMovement tem quantity para atender a essa Order
             StockMovement stockMovement = stockMovementService.findStockMovementByItemName(itemName);
             if (stockMovement.getQuantity() >= orderDTO.getQuantity()) {
-                //implement TODO:  Realizar a Order
                 order.setUser(user);
                 order.setItem(item);
                 order.setQuantity(orderDTO.getQuantity());
                 order.setStatus("Done");
                 order.setCreationDate(LocalDateTime.now());
-                // implement TODO: Atualizar a quantity do StockMovement
                 Integer updateStockMovementQuantity = stockMovement.getQuantity() - orderDTO.getQuantity();
                 stockMovement.setQuantity(updateStockMovementQuantity);
                 return orderRepository.save(order);

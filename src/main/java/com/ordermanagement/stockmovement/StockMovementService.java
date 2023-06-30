@@ -85,7 +85,7 @@ public class StockMovementService implements IStockMovementService  {
     }
 
     public StockMovement findStockMovementByItemName(String itemName) {
-        // TODO: Refatorar esse map para uma query com Jpa
+        // TODO: Refact to JPA query
         StockMovement stockMovement = new StockMovement();
         List<StockMovement> stockMovements = getAllStockMovements();
         for (StockMovement findStockMovement : stockMovements) {
@@ -97,7 +97,7 @@ public class StockMovementService implements IStockMovementService  {
     }
 
     public Boolean existsStockMovementByItemName(String itemName) {
-        // TODO: Refatorar esse map para uma query com Jpa
+        // TODO: Refact to JPA query
         List<StockMovement> stockMovements = getAllStockMovements();
         for (StockMovement stockMovement: stockMovements) {
             if(stockMovement.getItem().getName().equals(itemName)){
