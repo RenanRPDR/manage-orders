@@ -2,6 +2,8 @@ package com.ordermanagement.stockmovement;
 
 import com.ordermanagement.item.Item;
 import com.ordermanagement.item.ItemService;
+import com.ordermanagement.order.Order;
+import com.ordermanagement.order.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
