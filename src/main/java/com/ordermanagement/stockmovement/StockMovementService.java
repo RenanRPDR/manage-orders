@@ -13,13 +13,15 @@ import java.util.Optional;
 public class StockMovementService implements IStockMovementService  {
 
     private final ItemService itemService;
+    private final OrderRepository orderRepository;
 
     @Autowired
     private final IStockMovementRepository stockMovementRepository;
 
-    public StockMovementService(IStockMovementRepository stockMovementRepository, ItemService itemService) {
+    public StockMovementService(IStockMovementRepository stockMovementRepository, ItemService itemService, OrderRepository orderRepository) {
         this.stockMovementRepository = stockMovementRepository;
         this.itemService = itemService;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -62,7 +64,7 @@ public class StockMovementService implements IStockMovementService  {
     public StockMovement updateStockMovement(Long id, StockMovementDTO stockMovementDTO) {
         StockMovement stockMovement = new StockMovement();
         Optional<StockMovement> existingStockMovement = getStockMovementById(id);
-        if (existingStockMovement.isPresent()){
+        if (existingStockMovement.isPresent()) {
             Item item = new Item();
             item.setId(existingStockMovement.get().getItem().getId());
             item.setName(existingStockMovement.get().getItem().getName());
@@ -76,7 +78,14 @@ public class StockMovementService implements IStockMovementService  {
 
             stockMovement.setCreationDate(existingStockMovement.get().getCreationDate());
         }
-        return stockMovementRepository.save(stockMovement);
+        stockMovementRepository.save(stockMovement);
+
+        List<Order> ordersPending = orderRepository.findOrderByStatusAndItemId(stockMovement.getItem().getId());
+        for (Order order : ordersPending) {
+            order.setStatus("Done");
+            orderRepository.save(order);
+        }
+        return stockMovement;
     }
 
     @Override
