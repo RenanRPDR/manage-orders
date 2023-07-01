@@ -72,11 +72,11 @@ public class StockMovementService implements IStockMovementService  {
             item.setName(existingStockMovement.get().getItem().getName());
             stockMovement.setItem(item);
             stockMovement.setId(existingStockMovement.get().getId());
-
             Integer quantity = stockMovementDTO.getQuantity();
             if (quantity == null) { throw new IllegalArgumentException("Quantity must not be null");}
             if (quantity < 0) { throw new IllegalArgumentException("Quantity value must not be negative");}
-            stockMovement.setQuantity(quantity);
+            stockMovement.setQuantity(existingStockMovement.get().getQuantity() + quantity);
+
 
             stockMovement.setCreationDate(existingStockMovement.get().getCreationDate());
         }
