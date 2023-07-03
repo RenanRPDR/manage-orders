@@ -64,7 +64,7 @@ public class OrderService {
                 order.setStatus("Done");
                 Integer updateStockMovementQuantity = stockMovement.getQuantity() - orderDTO.getQuantity();
                 stockMovement.setQuantity(updateStockMovementQuantity);
-                System.out.println(emailService.sendSuccessOrder(user));
+//                TODO: Implement sendMail here
             }
 
             if (stockMovement.getQuantity() < orderDTO.getQuantity()) {

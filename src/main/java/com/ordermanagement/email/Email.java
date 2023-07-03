@@ -17,11 +17,13 @@ public class Email implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private UUID emailId;
     private String ownerRef;
+    @Column(name = "email_from")
     private String emailFrom;
-    private String emailDTO;
+    @Column(name = "email_to")
+    private String emailTo;
     private String subject;
     @Column(columnDefinition = "TEXT")
     private String text;
     private LocalDateTime sendDateEmail;
-    private StatusEmail statusEmail;
+    private EmailStatusEnum emailStatusEnum;
 }

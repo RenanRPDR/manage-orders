@@ -1,7 +1,6 @@
 package com.ordermanagement.email;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +17,8 @@ public class EmailController {
     EmailService emailService;
 
     @PostMapping("/sendmail")
-    public ResponseEntity<Email> sendingEmail(@RequestBody @Valid EmailDTO emailDTO) {
-        Email email = new Email();
-        BeanUtils.copyProperties(emailDTO, email);
-        emailService.sendEmail(email);
-        return new ResponseEntity<>(email, HttpStatus.CREATED);
+    public ResponseEntity<Email> sendEmail(@RequestBody @Valid EmailDTO emailDTO) {
+        Email sendEmail = emailService.sendEmail(emailDTO);
+        return new ResponseEntity<>(sendEmail, HttpStatus.CREATED);
     }
 }
