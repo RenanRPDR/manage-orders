@@ -25,5 +25,5 @@ public class Email implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String text;
     private LocalDateTime sendDateEmail;
-    private EmailStatusEnum emailStatusEnum;
+    private EmailStatus emailStatus;
 }

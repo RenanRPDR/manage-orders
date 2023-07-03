@@ -40,9 +40,9 @@ public class EmailService {
             message.setText(email.getText());
             javaMailSender.send(message);
 
-            email.setEmailStatusEnum(EmailStatusEnum.SENT);
+            email.setEmailStatus(EmailStatus.SENT);
         } catch (MailException e) {
-            email.setEmailStatusEnum(EmailStatusEnum.ERROR);
+            email.setEmailStatus(EmailStatus.ERROR);
         } finally {
             return iEmailRepository.save(email);
         }

@@ -1,6 +1,6 @@
 package com.ordermanagement.email;
 
-public enum EmailStatusEnum {
+public enum EmailStatus {
     PROCESSING,
     SENT,
     ERROR

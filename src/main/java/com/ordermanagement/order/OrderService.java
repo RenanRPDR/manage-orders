@@ -1,5 +1,6 @@
 package com.ordermanagement.order;
 
+import com.ordermanagement.email.EmailDTO;
 import com.ordermanagement.email.EmailService;
 import com.ordermanagement.item.Item;
 import com.ordermanagement.item.ItemRepository;
@@ -65,6 +66,8 @@ public class OrderService {
                 Integer updateStockMovementQuantity = stockMovement.getQuantity() - orderDTO.getQuantity();
                 stockMovement.setQuantity(updateStockMovementQuantity);
 //                TODO: Implement sendMail here
+                EmailDTO emailDTO = createDtoToSendEmail(user);
+                emailService.sendEmail(emailDTO);
             }
 
             if (stockMovement.getQuantity() < orderDTO.getQuantity()) {
@@ -116,5 +119,15 @@ public class OrderService {
 
     public List<Order> findOrderByItemId(Long itemId) {
         return orderRepository.findOrderByItemId(itemId);
+    }
+
+    private static EmailDTO createDtoToSendEmail(User user) {
+        EmailDTO emailDTO = new EmailDTO();
+        emailDTO.setOwnerRef("Order Manegement");
+        emailDTO.setEmailFrom("ordermanegementchallenge@gmail.com");
+        emailDTO.setEmailTo(user.getEmail());
+        emailDTO.setSubject("Order done");
+        emailDTO.setText("Your order is created.");
+        return emailDTO;
     }
 }
