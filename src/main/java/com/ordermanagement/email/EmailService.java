@@ -9,16 +9,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class EmailService {
 
-    @Autowired
-    IEmailRepository iEmailRepository;
-    @Autowired
+    private final IEmailRepository iEmailRepository;
     private final JavaMailSender javaMailSender;
 
-    public EmailService(JavaMailSender javaMailSender) {
+    @Autowired
+    public EmailService(IEmailRepository iEmailRepository, JavaMailSender javaMailSender) {
+        this.iEmailRepository = iEmailRepository;
         this.javaMailSender = javaMailSender;
     }
 
@@ -46,5 +49,13 @@ public class EmailService {
         } finally {
             return iEmailRepository.save(email);
         }
+    }
+
+    public List<Email> getAllEmails() {
+        return  iEmailRepository.findAll();
+    }
+
+    public Optional<Email> getEmailById(UUID emailId) {
+        return iEmailRepository.findById(emailId);
     }
 }

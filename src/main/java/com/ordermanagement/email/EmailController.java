@@ -4,10 +4,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/emails")
@@ -20,5 +21,16 @@ public class EmailController {
     public ResponseEntity<Email> sendEmail(@RequestBody @Valid EmailDTO emailDTO) {
         Email sendEmail = emailService.sendEmail(emailDTO);
         return new ResponseEntity<>(sendEmail, HttpStatus.CREATED);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<Email>> getAllEmails(){
+        List<Email> emails = emailService.getAllEmails();
+        return new ResponseEntity<>(emails, HttpStatus.OK);
+    }
+    @GetMapping("/{emailId}")
+    public ResponseEntity<Email> getEmailById(@PathVariable UUID emailId) {
+        Optional<Email> email = emailService.getEmailById(emailId);
+        return email.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 }
