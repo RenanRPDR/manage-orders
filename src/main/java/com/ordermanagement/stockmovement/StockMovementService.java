@@ -129,7 +129,7 @@ public class StockMovementService implements IStockMovementService  {
     }
 
     public Boolean existsStockMovementByItemName(String itemName) {
-        // TODO: Refact to JPA query
+        //TODO: Refactor to JpaRepository
         List<StockMovement> stockMovements = getAllStockMovements();
         for (StockMovement stockMovement: stockMovements) {
             if(stockMovement.getItem().getName().equals(itemName)){
