@@ -19,7 +19,7 @@ public class StockController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Stock> getStockMovement(@PathVariable Long id) {
+    public ResponseEntity<Stock> getStock(@PathVariable Long id) {
         Optional<Stock> item = stockService.getStockById(id);
         return item.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -36,5 +36,15 @@ public class StockController {
     public ResponseEntity<Stock> createStock(@RequestBody StockDTO stockDTO) {
         Stock createdStock = stockService.createStock(stockDTO);
         return new ResponseEntity<>(createdStock, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteStock(@PathVariable Long id) {
+        Optional<Stock> item = stockService.getStockById(id);
+        if (item.isPresent()) {
+            stockService.deleteStock(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

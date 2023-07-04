@@ -52,6 +52,10 @@ public class StockService {
         return iStockRepository.save(stock);
     }
 
+    public void deleteStock(Long id) {
+        iStockRepository.deleteById(id);
+    }
+
     public Boolean existStockByItemName(String itemName) {
         //TODO: Refactor to JpaRepository
         List<Stock> stocks = getAllStocks();
