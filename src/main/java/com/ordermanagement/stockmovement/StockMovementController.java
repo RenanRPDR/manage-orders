@@ -40,7 +40,7 @@ public class StockMovementController {
 
     @PutMapping("/{id}")
     public ResponseEntity<StockMovement> update(@PathVariable Long id, @RequestBody StockMovementDTO stockMovementDTO) {
-        StockMovement updatedStockMovement = stockMovementService.updateStockMovement(id, stockMovementDTO);
+        StockMovement updatedStockMovement = stockMovementService.update(id, stockMovementDTO);
         return new ResponseEntity<>(updatedStockMovement, HttpStatus.OK);
     }
 

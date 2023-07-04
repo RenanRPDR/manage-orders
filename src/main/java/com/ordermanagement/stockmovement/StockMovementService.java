@@ -1,9 +1,13 @@
 package com.ordermanagement.stockmovement;
 
+import com.ordermanagement.email.EmailController;
+import com.ordermanagement.email.EmailDTO;
 import com.ordermanagement.item.Item;
 import com.ordermanagement.item.ItemService;
 import com.ordermanagement.order.Order;
 import com.ordermanagement.order.OrderRepository;
+import com.ordermanagement.user.User;
+import com.ordermanagement.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +19,24 @@ import java.util.Optional;
 public class StockMovementService implements IStockMovementService  {
 
     private final ItemService itemService;
+//    private final OrderService orderService;
     private final OrderRepository orderRepository;
+    private final EmailController emailController;
+    private final UserRepository userRepository;
 
     @Autowired
     private final IStockMovementRepository stockMovementRepository;
 
-    public StockMovementService(IStockMovementRepository stockMovementRepository, ItemService itemService, OrderRepository orderRepository) {
+    public StockMovementService(IStockMovementRepository stockMovementRepository,
+                                ItemService itemService,
+                                OrderRepository orderRepository,
+                                EmailController emailController,
+                                UserRepository userRepository) {
         this.stockMovementRepository = stockMovementRepository;
         this.itemService = itemService;
         this.orderRepository = orderRepository;
+        this.emailController = emailController;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -63,7 +76,7 @@ public class StockMovementService implements IStockMovementService  {
     }
 
     @Override
-    public StockMovement updateStockMovement(Long id, StockMovementDTO stockMovementDTO) {
+    public StockMovement update(Long id, StockMovementDTO stockMovementDTO) {
         StockMovement stockMovement = new StockMovement();
         Optional<StockMovement> existingStockMovement = getStockMovementById(id);
         if (existingStockMovement.isPresent()) {
@@ -82,8 +95,16 @@ public class StockMovementService implements IStockMovementService  {
         }
         stockMovementRepository.save(stockMovement);
 
+        // Trazer uma lista das Orders com: status: "Pending" e item.name = do updateStockMovement
         List<Order> ordersPending = orderRepository.findOrderByStatusAndItemId(stockMovement.getItem().getId());
+        EmailDTO emailDTO = new EmailDTO();
         for (Order order : ordersPending) {
+            Optional<User> user = userRepository.findById(order.getUser().getId());
+            //Disparar o email
+            emailDTO.setEmailTo(order.getUser().getEmail());
+            // Preenche DTO
+            emailDTO = createDtoToSendEmail(order.getUser(), emailDTO);
+            emailController.sendEmail(emailDTO);
             order.setStatus("Done");
             orderRepository.save(order);
         }
@@ -116,5 +137,13 @@ public class StockMovementService implements IStockMovementService  {
             }
         }
         return false;
+    }
+
+    private static EmailDTO createDtoToSendEmail(User user, EmailDTO emailDTO) {
+        emailDTO.setOwnerRef("Order Manegement");
+        emailDTO.setEmailFrom("ordermanegementchallenge@gmail.com");
+        emailDTO.setSubject("Order done BY StockMovementService");
+        emailDTO.setText("Your order is created.");
+        return emailDTO;
     }
 }
