@@ -17,6 +17,12 @@ public class StockMovementController {
         this.stockMovementService = stockMovementService;
     }
 
+
+    @PostMapping("/update-stock")
+    public ResponseEntity<StockMovement> updateStockByStockMovement(@RequestBody StockMovementDTO stockMovementDTO) {
+        StockMovement createdStockMovement = stockMovementService.updateStock(stockMovementDTO);
+        return new ResponseEntity<>(createdStockMovement, HttpStatus.CREATED);
+    }
     @PostMapping
     public ResponseEntity<StockMovement> createStockMovement(@RequestBody StockMovementDTO stockMovementDTO) {
         StockMovement createdStockMovement = stockMovementService.createStockMovement(stockMovementDTO);

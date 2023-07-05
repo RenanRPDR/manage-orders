@@ -6,6 +6,9 @@ import com.ordermanagement.item.Item;
 import com.ordermanagement.item.ItemService;
 import com.ordermanagement.order.Order;
 import com.ordermanagement.order.OrderRepository;
+import com.ordermanagement.stock.IStockRepository;
+import com.ordermanagement.stock.Stock;
+import com.ordermanagement.stock.StockService;
 import com.ordermanagement.user.User;
 import com.ordermanagement.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +22,11 @@ import java.util.Optional;
 public class StockMovementService implements IStockMovementService  {
 
     private final ItemService itemService;
-//    private final OrderService orderService;
     private final OrderRepository orderRepository;
     private final EmailController emailController;
     private final UserRepository userRepository;
+    private final StockService stockService;
+    private final IStockRepository iStockRepository;
 
     @Autowired
     private final IStockMovementRepository stockMovementRepository;
@@ -31,12 +35,62 @@ public class StockMovementService implements IStockMovementService  {
                                 ItemService itemService,
                                 OrderRepository orderRepository,
                                 EmailController emailController,
-                                UserRepository userRepository) {
+                                UserRepository userRepository, StockService stockService, IStockRepository iStockRepository) {
         this.stockMovementRepository = stockMovementRepository;
         this.itemService = itemService;
         this.orderRepository = orderRepository;
         this.emailController = emailController;
         this.userRepository = userRepository;
+        this.stockService = stockService;
+        this.iStockRepository = iStockRepository;
+    }
+
+    @Override
+    public StockMovement updateStock(StockMovementDTO stockMovementDTO) {
+        //TODO: Realizar validacao do stockMovementDTO
+        // implement...
+
+        Optional<Stock> optionalStockById = stockService.getStockById(stockMovementDTO.getStockId());
+        if (optionalStockById.isEmpty()){ throw new Error("Stock does not exist"); }
+
+        Stock stock = new Stock();
+        Integer quantityFromStockMovement = stockMovementDTO.getQuantity();
+        Integer quantityFromStock = optionalStockById.get().getQuantity();
+
+        switch (stockMovementDTO.getStockOperation()) {
+            case "put":
+                if (quantityFromStockMovement > 0) {
+                    stock.setQuantity(quantityFromStock + quantityFromStockMovement);
+                    stock.setId(optionalStockById.get().getId());
+                    stock.setItem(optionalStockById.get().getItem());
+                    stock.setCreationDate(LocalDateTime.now());
+                    iStockRepository.save(stock);
+                } else {
+                    throw new IllegalArgumentException("You must add a number greater than zero.");
+                }
+                break;
+            case "withdraw":
+                if (quantityFromStock >= quantityFromStockMovement) {
+                    stock.setQuantity(quantityFromStock - quantityFromStockMovement);
+                    stock.setQuantity(stockMovementDTO.getQuantity());
+                    stock.setId(optionalStockById.get().getId());
+                    stock.setItem(optionalStockById.get().getItem());
+                    stock.setCreationDate(LocalDateTime.now());
+                    iStockRepository.save(stock);
+                } else {
+                    throw new IllegalArgumentException("Not enough stock.");
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid stock operation. Use put or withdraw in stockOperation.");
+        }
+
+        StockMovement stockMovement = new StockMovement();
+        stockMovement.setStock(stock);
+        stockMovement.setQuantity(stockMovementDTO.getQuantity());
+        stockMovement.setItem(stock.getItem());
+        stockMovement.setCreationDate(LocalDateTime.now());
+        return stockMovementRepository.save(stockMovement);
     }
 
     @Override

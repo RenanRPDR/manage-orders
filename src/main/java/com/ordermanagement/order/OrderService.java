@@ -65,7 +65,6 @@ public class OrderService {
                 order.setStatus("Done");
                 Integer updateStockMovementQuantity = stockMovement.getQuantity() - orderDTO.getQuantity();
                 stockMovement.setQuantity(updateStockMovementQuantity);
-//                TODO: Implement sendMail here
                 EmailDTO emailDTO = createDtoToSendEmail(user);
                 emailService.sendEmail(emailDTO);
             }

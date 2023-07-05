@@ -1,6 +1,7 @@
 package com.ordermanagement.stockmovement;
 
 import com.ordermanagement.item.Item;
+import com.ordermanagement.stock.Stock;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,4 +18,6 @@ public class StockMovement {
     private Item item;
     private Integer quantity;
     private LocalDateTime creationDate;
+    @ManyToOne
+    private Stock stock;
 }
